@@ -5,18 +5,24 @@ export const userApi = createApi({
     baseQuery:fetchBaseQuery({
         baseUrl:"https://jsonplaceholder.typicode.com"
     }),
+    tagTypes:['User']
+    ,
     endpoints:(build)=>({
         getData:build.query({
             query: ()=>({
                 url:"/users",
                 method:"GET",
             }),
+            transformResponse:res=> res.sort((a,b)=> b.id - a.id),
+            providesTags:['User']
         }),
+        
         getDataById:build.query({
             query:(id)=>({
                 url: `/users/${id}`,
                 method:"GET",
-            })
+            }),
+            providesTags:['User']
         }),
 
         postData: build.mutation({
@@ -28,6 +34,7 @@ export const userApi = createApi({
                   'Content-type': 'application/json; charset=UTF-8',
                 },
               }),
+            invalidatesTags:['User']
         }),
         
         updateData: build.mutation({
@@ -39,6 +46,7 @@ export const userApi = createApi({
                   'Content-type': 'application/json; charset=UTF-8',
                 },
               }),
+            invalidatesTags:['User']
         }),
 
         patchingData: build.mutation({
@@ -50,13 +58,15 @@ export const userApi = createApi({
                   'Content-type': 'application/json; charset=UTF-8',
                 },
               }),
+              invalidatesTags:['User']
         }),
 
         deleteData: build.mutation({
             query:(id)=>({
                 url: `/users/${id}`,
                 method:"DELETE",
-            })
+            }),
+            invalidatesTags:['User']
         }),
 
 
